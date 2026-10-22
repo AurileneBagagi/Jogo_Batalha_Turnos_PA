@@ -8,8 +8,8 @@ O tema escolhido pela equipe foi o de Jogo de Batalha por Turnos (J3),o qual ser
 
 ### Integrantes:
  * Aurilene Bagagi;
- * 
- * 
+ * Eduardo Lustosa;
+ * Carlos Miguel;
  * 
 
 ## Documentação 
