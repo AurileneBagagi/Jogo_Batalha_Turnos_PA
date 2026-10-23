@@ -10,7 +10,7 @@ O tema escolhido pela equipe foi o de Jogo de Batalha por Turnos (J3),o qual ser
  * Aurilene Bagagi;
  * Eduardo Lustosa;
  * Carlos Miguel;
- * Gustavo Guede
+ * Gustavo Guedes;
 
 ## Documentação 
 
