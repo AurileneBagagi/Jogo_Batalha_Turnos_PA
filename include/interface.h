@@ -11,5 +11,6 @@ void acoes_text(int x);
 int resultado(Jogador* j);
 //void salvar();
 int dano(Jogador* j, int min, int max);
+void limpar_tela();
 
 #endif 

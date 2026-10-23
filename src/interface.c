@@ -7,16 +7,19 @@ void iniciar_jogo(){
 
     printf("==============================\n");
     printf("     BEM VINDOS(AS) AO     \n");
-    printf(" JOGO DE BATALHA DE TURNOS! \n");
+    printf("JOGO DE BATALHA DE TURNOS!\n");
     printf("==============================\n\n");
 
 }
 
 void atributos(Jogador* a, Jogador* b){
-    printf("\n----------ATRIBUTOS-----------\n");
+	limpar_tela();
+    printf("\n---------------------\n");
     buscar_atributos(a);
-    buscar_atributos(b);
     printf("------------------------------\n");
+    printf("\n---------------------\n");
+    buscar_atributos(b);
+    printf("---------------------\n");
 
 }
 
@@ -61,6 +64,12 @@ void turnos(Jogador* a, Jogador* b, int x){
         }
 
 }
+
+void limpar_tela() {
+    printf("\033[H\033[2J\033[3J");
+    fflush(stdout); 
+}
+
 
 
 
