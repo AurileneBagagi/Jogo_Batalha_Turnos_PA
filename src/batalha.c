@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <string.h>
 
 #include "../include/interface.h"
@@ -32,7 +34,8 @@ void string(char *destino, int x){
 
 
 int main(){
-
+	
+	srand(time(NULL));
     iniciar_jogo();
 
     char nome[50];

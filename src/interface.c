@@ -34,7 +34,6 @@ void acoes_text(int x){
 
 //pode separar em outra interface de ações;
 int dano(Jogador* j, int min, int max){
-    srand(vida_rest(j));
     int dano = (rand() % (max - min + 1)) + min;
 
     printf ("O inimigo recebeu %d de dano\n", dano);
