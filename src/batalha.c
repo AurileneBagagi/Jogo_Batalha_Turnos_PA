@@ -5,16 +5,25 @@
 #include "../include/jogador.h"
 
 // string: precisa prevenir erros
-void string(char *destino, int x){
+int string(char *destino, int x){
 
     char nome[50];
     
     printf("Digite o nome do Jogador %d: ", x);
+    fflush(stdout);
     
     if (fgets(nome, sizeof(nome), stdin) != NULL) {
         size_t tam = strlen(nome);
         if (tam > 0 && nome[tam - 1] == '\n') {
             nome[tam - 1] = '\0';
+        } else {
+            printf("\nERROR: Nome do jogador excedeu o tamanho de 50 caracteres\n");
+            return 0;
+        }
+
+        if (nome[0] == '\0') {
+            printf("\nERROR: Nada foi digitado\n");
+            return 0;
         }
     }
 
@@ -27,7 +36,7 @@ void string(char *destino, int x){
 
     *destino = '\0';
 
-    return;
+    return 1;
 }; 
 
 
@@ -36,7 +45,7 @@ int main(){
     iniciar_jogo();
 
     char nome[50];
-    string(nome, 1);
+    if (string(nome, 1) == 0) return 1;
 
     Jogador* a = criar(nome);
     if (!a) {
@@ -44,7 +53,7 @@ int main(){
         return 1;
     }
 
-    string(nome, 2);
+    if (string(nome, 2) == 0) return 1;
     Jogador* b = criar(nome);
     if (!b) {
         printf("ERROR: Não foi possivel cadastrar jogador\n");
@@ -61,6 +70,7 @@ int main(){
         turnos(b, a, 2);
     }
 
+    atributos(a,b);
 
     if (vida_rest(a)> vida_rest(b)) resultado(a);
     else resultado(b);
