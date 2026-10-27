@@ -26,9 +26,29 @@ Personagens alternam ações até restar um vencedor.
 * Registrar resultado;
 * Inventario simples;
 
-### Limite do escopo:
+## Instruções de Compilação e Execução
 
-Sem IA sofisticada ou sistema extenso de habilidades.
+### Linux
+
+O projeto utiliza o GNU Make (```Makefile```) para automação do ciclo de build para compilar e executar, basta seguir os passos abaixo:
+
+#### Pré-requisitos:
+
+* Make (Gerenciador de compilação);
+* GCC (Compilador c);
+
+#### Compilar e executar imediatamente
+
+```
+make run
+```
+
+#### Limpar arquivos compilados (opcional)
+
+```
+make clean
+```
+
 
 ## Estrutura do Projeto:
 ### TAD(s) e estrutura(s) de dados mais importantes:
@@ -37,3 +57,12 @@ Sem IA sofisticada ou sistema extenso de habilidades.
 ### Funcionalidade adicional.
 ### Limitações conhecidas relevantes.
 ### Uso de ferramentas de Inteligência Artificial (quando houver).
+
+Até o exato momento, a IA (especificamente o Gemini para estudantes) foi utilizada exclusivamente como ferramenta de apoio para:
+
+* **Tirar dúvidas conceituais:** Explicações sobre a linguagem C (strings, ponteiros, gerenciamento de memoria, outras sintaxes e organização de projeto);
+
+* **Revisão textual:** Correção da documentação e textos descritivos do projeto (quando solicitado).
+
+O código está sendo gerado pelos participantes da equipe.
+
