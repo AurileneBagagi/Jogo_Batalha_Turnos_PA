@@ -47,6 +47,16 @@ int vida_rest(Jogador* j){
 
 }
 
+int buscar_estamina(Jogador* j){
+
+    if (!j) {
+        printf("ERROR: acao invalida!.\n");
+        return -1; 
+    }
+
+    return j->estamina;
+}
+
 int receber_dano(Jogador* j, int dano){
 
     if (!j) {

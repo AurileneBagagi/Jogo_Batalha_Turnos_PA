@@ -32,11 +32,12 @@ void acoes_text(int x){
     printf("Digite um número: ");
 }
 
-//pode separar em outra interface de ações;
+//sug. Auri: pode separar em outra interface de ações;
 int dano(Jogador* j, int min, int max){
     srand(vida_rest(j));
     int dano = (rand() % (max - min + 1)) + min;
 
+    // sug. Auri: o reload tem que mostrar o feedback para o usuario
     printf ("O inimigo recebeu %d de dano\n", dano);
 
     return dano;
@@ -47,8 +48,11 @@ int resultado(Jogador* j){
     printf("\n------------------------------\n");
     printf("Parabens! %s\n", buscar_nome(j));
     printf("==============================\n");
+
+    return 1;
 }
-//pode separar em outra interface de ações;
+
+//sug. Auri: pode separar em outra interface de ações;
 void turnos(Jogador* a, Jogador* b, int x){
         int acao;
 
@@ -58,9 +62,12 @@ void turnos(Jogador* a, Jogador* b, int x){
 
         if (acao == 1){
             receber_dano(b, dano(a, 10, 15));
-        } else if (acao == 2){
+        } else if (acao == 2 && buscar_estamina(a) > 0){
             receber_dano(b, dano(a, 15, 20));
             alterar_estamina(a, 5);
+        } else {
+            // sug. Auri: o reload tem que mostrar o feedback para o usuario
+            printf("Ação invalida! Jogador perdeu o turno!\n");
         }
 
 }
