@@ -12,5 +12,6 @@ int resultado(Jogador* j);
 //void salvar();
 int dano(Jogador* j, int min, int max);
 void limpar_tela();
-
+void distribuir_pontos(Jogador* j);
+int menu_inventario(Jogador* j);
 #endif 
