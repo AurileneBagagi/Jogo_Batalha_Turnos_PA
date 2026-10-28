@@ -3,7 +3,7 @@
 
 typedef struct Jogador Jogador;
 
-Jogador* criar(char *nome);
+Jogador* criar(char *nome, int g, int p);
 
 //void adiciona_personagem();
 int vida_rest(Jogador* j);

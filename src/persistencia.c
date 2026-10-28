@@ -2,17 +2,19 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../include/persistencia.h"
-#include "../data/jogador.csv"
 
 //caso haja necessidade de alterar o path
-#define PATH "../data/jogador.csv" 
-#define PATH_TEMP "../data/temp.csv"
+#define PATH "data/jogador.csv" 
+#define PATH_TEMP "/data/temp.csv"
 
 struct Arquivo {
 
     FILE *arq;
 
 };
+
+//Aurilene: é preciso organizar ainda as chamadas de cada função.
+// Implementar a atualização, se já tiver será atualizado os dados e etc....
 
 static void verifica(){
 
@@ -101,7 +103,7 @@ int buscar(Arquivo *a, char* n, int *g, int *p){
 
 }
 
-int inserir(Arquivo *a, char* n, int g, int p){
+int inserir(Arquivo *a, const char* n, int g, int p){
     
     if (!a || !a->arq || !n) {
         printf("ERROR: parametros invalidos!\n");
@@ -127,7 +129,7 @@ int inserir(Arquivo *a, char* n, int g, int p){
 }
 
 
-int atualizar(Arquivo *a, char* n, int g, int p, char i){
+int atualizar(Arquivo *a, const char* n, int g, int p, char i){
 
     if (!a || !n || !g || !p) {
         printf("ERROR: parametros invalidos!\n");

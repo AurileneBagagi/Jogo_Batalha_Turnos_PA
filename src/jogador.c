@@ -7,17 +7,19 @@
 #define VIDA_BASE 100
 
 struct Jogador {
-    //int id;
+    
     char nome[50];
 
     int vida;
     int vida_total;
     int estamina;
     int estamina_total;
+    int ganhos;
+    int percas; 
 
 };
 
-Jogador* criar(char *nome){
+Jogador* criar(char *nome, int g, int p){
     Jogador* j = (Jogador*) malloc(sizeof(struct Jogador));
 
     if(!j) {
@@ -32,6 +34,8 @@ Jogador* criar(char *nome){
     j->estamina_total = ESTAMINA_BASE;
     j->vida = VIDA_BASE;
     j->vida_total = VIDA_BASE;
+    j->ganhos = g;
+    j->percas = p;
 
     return j;
 }
