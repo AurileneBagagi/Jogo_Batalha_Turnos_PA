@@ -40,8 +40,16 @@ int string(char *destino, int x){
     return 1;
 }; 
 
+void atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
+    resultado(a);
+    atualizar(arq, buscar_nome(a), buscar_ganhos(a), buscar_percas(a), 'g');
+    atualizar(arq, buscar_nome(b), buscar_ganhos(b), buscar_percas(b), 'p');
+}
+
 
 int main(){
+
+    int ganhos = 0, percas = 0;
 
     iniciar_jogo();
 
@@ -56,12 +64,8 @@ int main(){
 
     char nome[50];
     if (string(nome, 1) == 0) return 1;
-
-    int g = 0;
-    int p = 0;
-
-    int x = buscar(arq, nome, &g, &p);
-    Jogador* a = criar(nome, g, p);
+    buscar(arq, nome, &ganhos, &percas);
+    Jogador* a = criar(nome, ganhos, percas);
 
     //Jogador* a = criar(nome);
     if (!a) {
@@ -69,10 +73,10 @@ int main(){
         return 1;
     }
 
-    g = 0, p = 0;
+    ganhos = 0, percas = 0;
     if (string(nome, 2) == 0) return 1;
-    buscar(arq, nome, &g, &p);
-    Jogador* b = criar(nome, g, p);
+    buscar(arq, nome, &ganhos, &percas);
+    Jogador* b = criar(nome, ganhos, percas);
 
     //Jogador* b = criar(nome);
     // FIM;
@@ -95,15 +99,12 @@ int main(){
 
      //Aurilene: falta organizar umas chamadas de ateração do arquivo. 
     if (vida_rest(a)> vida_rest(b)){ 
-        resultado(a);
-        inserir(arq, buscar_nome(a), 1, 0); // para teste
-        inserir(arq, buscar_nome(b), 0, 1); // para teste
+        atualiza_resultado(arq, a, b);
     } else{
-        resultado(b);
-        inserir(arq, buscar_nome(b), 1, 0); // para teste
-        inserir(arq, buscar_nome(a), 0, 1); // para teste
+        atualiza_resultado(arq, b, a);
     }
 
+    ler(arq);
 
     //GERENCIAMENTO DE MEMORIA
 

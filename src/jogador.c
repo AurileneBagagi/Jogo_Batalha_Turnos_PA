@@ -61,6 +61,27 @@ int buscar_estamina(Jogador* j){
     return j->estamina;
 }
 
+int buscar_ganhos(Jogador* j){
+
+    if (!j) {
+        printf("ERROR: acao invalida!.\n");
+        return -1; 
+    }
+
+    return j->ganhos;
+}
+
+int buscar_percas(Jogador* j){
+
+    if (!j) {
+        printf("ERROR: acao invalida!.\n");
+        return -1; 
+    }
+
+    return j->percas;
+}
+
+
 int receber_dano(Jogador* j, int dano){
 
     if (!j) {

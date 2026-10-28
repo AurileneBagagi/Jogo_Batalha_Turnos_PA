@@ -5,7 +5,7 @@
 
 //caso haja necessidade de alterar o path
 #define PATH "data/jogador.csv" 
-#define PATH_TEMP "/data/temp.csv"
+#define PATH_TEMP "data/temp.csv"
 
 struct Arquivo {
 
@@ -62,16 +62,15 @@ void ler(Arquivo* a){
     char nome[50];
     int ganho, percas;
 
-    printf("--------------- Jogadores ---------------\n");
+    printf("=============== JOGADORES ===============\n");
     printf("NOME             | GANHOU |  PERDEU \n");
 
     while (fgets(linha, sizeof(linha), a->arq) != NULL){
       if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
-        printf(" %-17s| %d | %d\n", nome, ganho, percas);
+        printf(" %-16s| %-6d | %-6d\n", nome, ganho, percas);
       }
     }
-
-    printf("-----------------------------------------\n");
+    printf("========================================\n");
     
 }
 
@@ -128,10 +127,23 @@ int inserir(Arquivo *a, const char* n, int g, int p){
     
 }
 
+void atualizar_resultado(int *g, int *p, char i){
+
+    if (i == 'g'){
+        *g += 1;
+    } else if ( i == 'p'){
+        *p += 1;
+    } else {
+        printf("ERROR: parametro invalido!");
+        return;
+    }
+    
+
+}
 
 int atualizar(Arquivo *a, const char* n, int g, int p, char i){
 
-    if (!a || !n || !g || !p) {
+    if (!a || !n || g < 0|| p < 0) {
         printf("ERROR: parametros invalidos!\n");
         return 0;
     }
@@ -154,23 +166,20 @@ int atualizar(Arquivo *a, const char* n, int g, int p, char i){
         return 0;
     }
 
-    rewind(a->arq);
     char linha[256];
     char nome[50];
     int ganho, percas;
     int x = 0;
 
-    while (fgets(linha, sizeof(linha), a->arq) != NULL){
+    while (fgets(linha, sizeof(linha), velho) != NULL){
 
       if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
         
         if(strcmp(n, nome) == 0 && g == ganho && p == percas){
+
+            atualizar_resultado(&g, &p, i);
            
-            if (i == 'p' ){
-                fprintf(temp, "%s;%d;%d\n", nome, g, p+1);
-            } else {
-                fprintf(temp, "%s;%d;%d\n", nome, g+1, p);
-            }
+            fprintf(temp, "%s;%d;%d\n", nome, g, p);
             
             x = 1;
             continue;
@@ -188,10 +197,16 @@ int atualizar(Arquivo *a, const char* n, int g, int p, char i){
         rename(PATH_TEMP, PATH);
     } else {
         remove(PATH_TEMP);
-        printf("ERROR: não foi possível atualizar!");
     }
 
     a->arq = fopen(PATH, "r+");
+
+    if (x == 0){
+        atualizar_resultado(&g, &p, i);
+        inserir(a, n, g, p);
+        x = 1;
+    }
+
     return x;
 
 }
