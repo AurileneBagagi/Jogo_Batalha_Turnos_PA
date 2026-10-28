@@ -1,0 +1,215 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "../include/persistencia.h"
+#include "../data/jogador.csv"
+
+//caso haja necessidade de alterar o path
+#define PATH "../data/jogador.csv" 
+#define PATH_TEMP "../data/temp.csv"
+
+struct Arquivo {
+
+    FILE *arq;
+
+};
+
+static void verifica(){
+
+    FILE *arq = fopen(PATH, "r");
+
+    if (arq == NULL){
+        arq = fopen(PATH, "w");
+
+        if (arq != NULL){
+            fclose(arq);
+        }
+    } else {
+        fclose(arq);
+    }
+}
+
+Arquivo* abrir(){
+
+    verifica();
+
+    Arquivo *arq = (Arquivo*) malloc(sizeof(Arquivo));
+    if(!arq) {
+        printf("ERROR: não foi possível abrir o arquivo");
+        return NULL;
+    }
+
+    arq->arq = fopen(PATH, "r+");
+    if (arq->arq == NULL){
+        free(arq);
+        return NULL;
+    }
+    return arq;
+
+}
+
+void ler(Arquivo* a){
+
+    if (!a || !a->arq) {
+        printf("ERROR: Arquivo invalido ou nao aberto.\n");
+        return;
+    }
+
+    rewind(a->arq);
+    char linha[256];
+    char nome[50];
+    int ganho, percas;
+
+    printf("--------------- Jogadores ---------------\n");
+    printf("NOME             | GANHOU |  PERDEU \n");
+
+    while (fgets(linha, sizeof(linha), a->arq) != NULL){
+      if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
+        printf(" %-17s| %d | %d\n", nome, ganho, percas);
+      }
+    }
+
+    printf("-----------------------------------------\n");
+    
+}
+
+int buscar(Arquivo *a, char* n, int *g, int *p){
+
+    if (!a || !a->arq || !n || !g || !p) {
+        printf("ERROR: parametros invalidos!\n");
+        return 0;
+    }
+
+    rewind(a->arq);
+    char linha[256];
+    char nome[50];
+    int ganho, percas;
+
+    while (fgets(linha, sizeof(linha), a->arq) != NULL){
+      if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
+        
+        if(strcmp(n, nome) == 0){
+            *g = ganho;
+            *p = percas;
+
+            return 1;
+        }
+      }
+    }
+
+    return 0;
+
+}
+
+int inserir(Arquivo *a, char* n, int g, int p){
+    
+    if (!a || !a->arq || !n) {
+        printf("ERROR: parametros invalidos!\n");
+        return 0;
+    }
+
+    if (fseek(a->arq, 0, SEEK_END) != 0) {
+        printf("ERROR: acao invalida!\n");
+        return 0;
+    }
+
+    int x = fprintf(a->arq, "%s;%d;%d\n", n, g, p);
+
+    if (x < 0){
+        printf("ERROR: acao invalida!\n");
+        return 0;
+    }
+
+    fflush(a->arq);
+
+    return 1;
+    
+}
+
+
+int atualizar(Arquivo *a, char* n, int g, int p, char i){
+
+    if (!a || !n || !g || !p) {
+        printf("ERROR: parametros invalidos!\n");
+        return 0;
+    }
+
+    //boas práticas: perguntar ao professor depois se é válido.
+    if (a->arq != NULL) {
+        fclose(a->arq);
+        a->arq = NULL;
+    }
+
+    FILE *velho = fopen(PATH, "r");
+    FILE *temp = fopen(PATH_TEMP, "w");
+
+    if (!velho || !temp) {
+        if (velho) fclose(velho);
+        if (temp)   fclose(temp);
+        
+        // retornar, não usei a outra função abrir() para evitar ponteiro desnecessario
+        a->arq = fopen(PATH, "r+");
+        return 0;
+    }
+
+    rewind(a->arq);
+    char linha[256];
+    char nome[50];
+    int ganho, percas;
+    int x = 0;
+
+    while (fgets(linha, sizeof(linha), a->arq) != NULL){
+
+      if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
+        
+        if(strcmp(n, nome) == 0 && g == ganho && p == percas){
+           
+            if (i == 'p' ){
+                fprintf(temp, "%s;%d;%d\n", nome, g, p+1);
+            } else {
+                fprintf(temp, "%s;%d;%d\n", nome, g+1, p);
+            }
+            
+            x = 1;
+            continue;
+        }
+      }
+
+      fputs(linha, temp);
+    }
+
+    fclose(velho);
+    fclose(temp);
+
+    if (x) {
+        remove(PATH);
+        rename(PATH_TEMP, PATH);
+    } else {
+        remove(PATH_TEMP);
+        printf("ERROR: não foi possível atualizar!");
+    }
+
+    a->arq = fopen(PATH, "r+");
+    return x;
+
+}
+
+
+void fechar(Arquivo* a){
+
+   if (!a) {
+        printf("ERROR: acao invalida!.\n");
+        return; 
+    }
+
+    if (a->arq != NULL){
+        fclose(a->arq);
+    }
+
+    free(a);
+
+}
+
+
+
+
