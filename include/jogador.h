@@ -31,5 +31,8 @@ void aplicar_atributos(Jogador* j);
 /* Inventario */
 int buscar_qtd_item(Jogador* j, TipoItem t);
 int usar_item(Jogador* j, TipoItem t);
+int usar_pocao(Jogador* j);
+int tem_pocao(Jogador* j);
+
 
 #endif

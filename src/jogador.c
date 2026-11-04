@@ -14,6 +14,7 @@ struct Jogador {
     int vida_total;
     int estamina;
     int estamina_total;
+    int porcao;
 
 	int atributos[NUM_ATRIBUTOS];
     int pontos_livres;
@@ -40,6 +41,7 @@ Jogador* criar(char *nome){
     for (i = 0; i < NUM_ATRIBUTOS; i++) j->atributos[i] = 0;
     for (i = 0; i < NUM_ITENS; i++) j->itens[i] = ITENS_INICIAIS;
     j->pontos_livres = PONTOS_INICIAIS;
+    j->pocao = 1;
 
     aplicar_atributos(j);
     return j;
@@ -198,37 +200,19 @@ void aplicar_atributos(Jogador* j){
 }
 
 /* ===== INVENTARIO ===== */
-
-int buscar_qtd_item(Jogador* j, TipoItem t){
-    if (!j || t < 0 || t >= NUM_ITENS) return -1;
-    return j->itens[t];
+int tem_pocao(Jogador* j){
+    return j ? j->pocao : 0;
 }
 
-/* Retorna: >0 efeito aplicado | 0 item indisponivel | -1 vida ja cheia */
-int usar_item(Jogador* j, TipoItem t){
-    int efeito;
-    if (!j || t < 0 || t >= NUM_ITENS || j->itens[t] <= 0) return 0;
-
-    switch (t) {
-        case ITEM_VIDA:
-            if (j->vida >= j->vida_total) return -1;
-            efeito = j->vida_total * (CURA_MIN_PCT + rand() % (CURA_MAX_PCT - CURA_MIN_PCT + 1)) / 100;
-            if (j->vida + efeito > j->vida_total) efeito = j->vida_total - j->vida;
-            j->vida += efeito;
-            break;
-        case ITEM_ATAQUE:
-            efeito = BONUS_POCAO;
-            j->atributos[ATR_ATAQUE] += efeito;
-            break;
-        case ITEM_DEFESA:
-            efeito = BONUS_POCAO;
-            j->atributos[ATR_DEFESA] += efeito;
-            break;
-        default:
-            return 0;
+void usar_pocao(Jogador* j){
+    if (j->pocao == 0){
+        printf("Voce nao tem mais pocao! Jogador perdeu o turno!\n");
+        return;
     }
-    j->itens[t]--;
-    return efeito;
+    j->pocao = 0;
+    j->vida += 25;
+    if (j->vida > j->vida_total) j->vida = j->vida_total;
+    printf("%s recuperou 25 de vida!\n", j->nome);
 }
 
 

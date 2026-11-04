@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
+
 
 #include "../include/interface.h"
 #include "../include/jogador.h"
