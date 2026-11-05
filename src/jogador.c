@@ -8,17 +8,19 @@
 #define CURA_POCAO 30
 
 struct Jogador {
-    //int id;
+    
     char nome[50];
 
     int vida;
     int vida_total;
     int estamina;
     int estamina_total;
+    int ganhos;
+    int percas; 
     int pocoes;
 };
 
-Jogador* criar(char *nome){
+Jogador* criar(char *nome, int g, int p){
     Jogador* j = (Jogador*) malloc(sizeof(struct Jogador));
 
     if(!j) {
@@ -33,7 +35,6 @@ Jogador* criar(char *nome){
     j->estamina_total = ESTAMINA_BASE;
     j->vida = VIDA_BASE;
     j->vida_total = VIDA_BASE;
-    j->pocoes = 1;
 
     return j;
 }
@@ -56,6 +57,27 @@ int buscar_estamina(Jogador* j){
 
     return j->estamina;
 }
+
+int buscar_ganhos(Jogador* j){
+
+    if (!j) {
+        printf("ERROR: acao invalida!.\n");
+        return -1; 
+    }
+
+    return j->ganhos;
+}
+
+int buscar_percas(Jogador* j){
+
+    if (!j) {
+        printf("ERROR: acao invalida!.\n");
+        return -1; 
+    }
+
+    return j->percas;
+}
+
 
 int receber_dano(Jogador* j, int dano){
 

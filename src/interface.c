@@ -16,7 +16,7 @@ void atributos(Jogador* a, Jogador* b){
 	limpar_tela();
     printf("\n---------------------\n");
     buscar_atributos(a);
-    printf("------------------------------\n");
+    printf("-----------------------\n");
     printf("\n---------------------\n");
     buscar_atributos(b);
     printf("---------------------\n");
