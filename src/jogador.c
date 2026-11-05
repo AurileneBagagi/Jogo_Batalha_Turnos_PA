@@ -35,6 +35,9 @@ Jogador* criar(char *nome, int g, int p){
     j->estamina_total = ESTAMINA_BASE;
     j->vida = VIDA_BASE;
     j->vida_total = VIDA_BASE;
+    j->ganhos = g;
+    j->percas = p;
+    j->pocoes = 1;
 
     return j;
 }
