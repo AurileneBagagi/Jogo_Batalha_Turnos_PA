@@ -46,6 +46,7 @@ int string(char *destino, int x){
 int main(){
 
     iniciar_jogo();
+    srand(time(NULL));
 
     char nome[50];
     if (string(nome, 1) == 0) return 1;

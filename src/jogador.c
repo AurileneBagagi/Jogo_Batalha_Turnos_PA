@@ -5,6 +5,7 @@
 #include "../include/cores.h"
 #define ESTAMINA_BASE 25
 #define VIDA_BASE 100
+#define CURA_POCAO 30
 
 struct Jogador {
     //int id;
@@ -14,12 +15,7 @@ struct Jogador {
     int vida_total;
     int estamina;
     int estamina_total;
-    int porcao;
-
-	int atributos[NUM_ATRIBUTOS];
-    int pontos_livres;
-    int itens[NUM_ITENS];
-
+    int pocoes;
 };
 
 Jogador* criar(char *nome){
@@ -37,13 +33,8 @@ Jogador* criar(char *nome){
     j->estamina_total = ESTAMINA_BASE;
     j->vida = VIDA_BASE;
     j->vida_total = VIDA_BASE;
-	// atributos 
-    for (i = 0; i < NUM_ATRIBUTOS; i++) j->atributos[i] = 0;
-    for (i = 0; i < NUM_ITENS; i++) j->itens[i] = ITENS_INICIAIS;
-    j->pontos_livres = PONTOS_INICIAIS;
-    j->pocao = 1;
+    j->pocoes = 1;
 
-    aplicar_atributos(j);
     return j;
 }
 
@@ -53,9 +44,7 @@ int vida_rest(Jogador* j){
         printf("ERROR: acao invalida!.\n");
         return -1; 
     }
-
     return j->vida;
-
 }
 
 int buscar_estamina(Jogador* j){
@@ -125,9 +114,6 @@ void buscar_atributos(Jogador* j){
 	RESET,
 	criar_barra(BG_VERDE, j->vida, barra_v, j->vida_total),
 	criar_barra(BG_AZUL, j->estamina, barra_e, j->estamina_total));
-	printf("ATQ: %d | DEF: %d | PODER: %d\n",
-    j->atributos[ATR_ATAQUE], j->atributos[ATR_DEFESA], j->atributos[ATR_PODER]);
-
 
     free(barra_v);
     free(barra_e);
@@ -172,47 +158,30 @@ void destruir(Jogador* j){
 
 }
 
-/* ===== ATRIBUTOS ===== */
-
-int buscar_atributo(Jogador* j, Atributo a){
-    if (!j || a < 0 || a >= NUM_ATRIBUTOS) return -1;
-    return j->atributos[a];
-}
-
-int buscar_pontos_livres(Jogador* j){
+/* POCAO DE VIDA */
+int usar_pocao(Jogador* j){
     if (!j) return -1;
-    return j->pontos_livres;
-}
 
-int adicionar_pontos(Jogador* j, Atributo a, int qtd){
-    if (!j || a < 0 || a >= NUM_ATRIBUTOS || qtd <= 0 || qtd > j->pontos_livres) return 0;
-    j->atributos[a] += qtd;
-    j->pontos_livres -= qtd;
-    return 1;
-}
-
-void aplicar_atributos(Jogador* j){
-    if (!j) return;
-    j->vida_total = VIDA_BASE + j->atributos[ATR_VIDA] * VIDA_POR_PONTO;
-    j->vida = j->vida_total;
-    j->estamina_total = ESTAMINA_BASE + j->atributos[ATR_ESTAMINA] * ESTAMINA_POR_PONTO;
-    j->estamina = j->estamina_total;
-}
-
-/* ===== INVENTARIO ===== */
-int tem_pocao(Jogador* j){
-    return j ? j->pocao : 0;
-}
-
-void usar_pocao(Jogador* j){
-    if (j->pocao == 0){
-        printf("Voce nao tem mais pocao! Jogador perdeu o turno!\n");
-        return;
+    if (j->pocoes <= 0){
+        printf("Pocao de cura ja foi utilizada.\n");
+        return -1;                     // perde a vez
     }
-    j->pocao = 0;
-    j->vida += 25;
-    if (j->vida > j->vida_total) j->vida = j->vida_total;
-    printf("%s recuperou 25 de vida!\n", j->nome);
+
+    if (j->vida >= j->vida_total){
+        printf("Vida cheia! Nao cura.\n");
+        return 0;                      // pocao NAO e gasta
+    }
+
+    int antes = j->vida;
+    j->vida += CURA_POCAO;
+    if (j->vida > j->vida_total) j->vida = j->vida_total;   // sem sobrecura
+    j->pocoes--;
+
+    printf("%s usou a Pocao de Cura! (+%d de vida)\n", j->nome, j->vida - antes);
+    return j->vida;
 }
 
-
+int buscar_pocoes(Jogador* j){
+    if (!j) return 0;
+    return j->pocoes;
+}
