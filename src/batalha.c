@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <string.h>
 
 #include "../include/interface.h"
@@ -48,6 +50,8 @@ void atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
 
 
 int main(){
+	
+	srand(time(NULL));
 
     int ganhos = 0, percas = 0;
 

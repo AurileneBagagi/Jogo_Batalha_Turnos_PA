@@ -10,7 +10,7 @@ SRCS = $(wildcard src/*.c)
 
 # Regra principal: compila diretamente do .c para o executável sem gerar .o
 all:
-	@mkdir -p bin
+	@mkdir -p bin data
 	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET)
 
 # Regra para compilar e já executar o programa

@@ -34,7 +34,6 @@ void acoes_text(int x){
 
 //sug. Auri: pode separar em outra interface de ações;
 int dano(Jogador* j, int min, int max){
-    srand(vida_rest(j));
     int dano = (rand() % (max - min + 1)) + min;
 
     // sug. Auri: o reload tem que mostrar o feedback para o usuario
