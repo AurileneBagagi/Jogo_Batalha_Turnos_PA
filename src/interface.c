@@ -23,9 +23,9 @@ void atributos(Jogador* a, Jogador* b){
 
 }
 
-void acoes_text(Jogador* j, int x){
+void acoes_text(Jogador* j){
     printf("\n--------ACOES-----------\n\n");
-    printf("Escolha sua acao Jogador %d:\n", x);
+    printf("Escolha sua acao Jogador \"%s\":\n", buscar_nome(j));
     printf("[1] Atacar (Dano: 10-15)\n");
     printf("[2] Habilidade (Dano: 15-20, Custo: 10 estamina)\n");
     printf("[3] Pocao de Cura | Qtd: %d\n", buscar_pocoes(j));
@@ -47,13 +47,17 @@ int resultado(Jogador* j){
     return 1;
 }
 
-void turnos(Jogador* a, Jogador* b, int x){
+void turnos(Jogador* a, Jogador* b){
         int acao = 0;
 
-        acoes_text(a, x);
+        acoes_text(a);
 
-
-        scanf("%d", &acao);
+        if (scanf("%d", &acao) != 1) {
+            int caractere;
+            while ((caractere = getchar()) != '\n' && caractere != EOF) {
+            }
+            acao = 0; 
+        }
 
         if (acao == 1){
             receber_dano(b, dano(a, 10, 15));

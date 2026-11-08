@@ -92,11 +92,11 @@ int main(){
     while (vida_rest(a)> 0 && vida_rest(b)> 0){
 
         atributos(a,b);
-        turnos(a, b, 1);
+        turnos(a, b);
         if(vida_rest(b)<=0) break;
 
         atributos(a, b);
-        turnos(b, a, 2);
+        turnos(b, a);
     }
 
     atributos(a,b);
