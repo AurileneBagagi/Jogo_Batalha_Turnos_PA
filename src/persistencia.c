@@ -31,6 +31,7 @@ static void verifica(){
     }
 }
 
+
 Arquivo* abrir(){
 
     verifica();
@@ -62,16 +63,70 @@ void ler(Arquivo* a){
     char nome[50];
     int ganho, percas;
 
-    printf("=============== JOGADORES ===============\n");
-    printf("NOME             | GANHOU |  PERDEU \n");
 
-    while (fgets(linha, sizeof(linha), a->arq) != NULL){
-      if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
-        printf(" %-16s| %-6d | %-6d\n", nome, ganho, percas);
-      }
+} 
+
+typedef struct {
+	char nome[50];
+	int ganhos;
+	int percas;
+} Registro;
+
+static int comparar(const void* x, const void* y){
+	const Registro* a = (const Registro*) x;
+	const Registro* b = (const Registro*) y;
+	
+	if(a->ganhos != b->ganhos)return b->ganhos - a->ganhos;
+	if(a->percas != b->percas)return b->percas - a->percas;
+	return strcmp(a->nome, b->nome);
+}
+void ranking(Arquivo* a, int limite){
+
+    if (!a || !a->arq) {
+        printf("ERROR: Arquivo invalido ou nao aberto.\n");
+        return;
     }
-    printf("========================================\n");
-    
+
+    char linha[256];
+    Registro r;
+    int total = 0;
+
+    // primeira passada: conta quantos jogadores existem
+    rewind(a->arq);
+    while (fgets(linha, sizeof(linha), a->arq) != NULL){
+        if (sscanf(linha, "%49[^;];%d;%d", r.nome, &r.ganhos, &r.percas) == 3) total++;
+    }
+
+    if (total == 0){
+        printf("Ainda nao ha jogadores no ranking.\n");
+        return;
+    }
+
+    Registro* lista = (Registro*) malloc(total * sizeof(Registro));
+    if (!lista){
+        printf("ERROR: sem memoria para montar o ranking\n");
+        return;
+    }
+
+    // segunda passada: guarda cada jogador na lista
+    int n = 0;
+    rewind(a->arq);
+    while (n < total && fgets(linha, sizeof(linha), a->arq) != NULL){
+        if (sscanf(linha, "%49[^;];%d;%d", lista[n].nome, &lista[n].ganhos, &lista[n].percas) == 3) n++;
+    }
+
+    qsort(lista, n, sizeof(Registro), comparar);
+
+    if (limite <= 0 || limite > n) limite = n;
+
+    printf("========== RANKING DE VITORIAS ==========\n");
+    printf(" #  NOME             | VITORIAS | DERROTAS\n");
+    for (int i = 0; i < limite; i++){
+        printf("%2d  %-16s | %-8d | %-8d\n", i + 1, lista[i].nome, lista[i].ganhos, lista[i].percas);
+    }
+    printf("=========================================\n");
+
+    free(lista);
 }
 
 int buscar(Arquivo *a, char* n, int *g, int *p){

@@ -63,8 +63,9 @@ int main(){
         printf("ERROR: Não foi possivel abrir arquivo!\n");
         return 1;
     }
-
-    ler(arq);
+    
+	ler(arq);
+	ranking(arq, 5);
 
     char nome[50];
     if (string(nome, 1) == 0) return 1;
@@ -108,7 +109,7 @@ int main(){
         atualiza_resultado(arq, b, a);
     }
 
-    ler(arq);
+    ranking(arq, 5);
 
     //GERENCIAMENTO DE MEMORIA
 
