@@ -10,6 +10,9 @@ int buscar_estamina(Jogador* j);
 int receber_dano(Jogador* j, int dano);
 int alterar_estamina(Jogador* j, int dano);
 
+int usar_pocao(Jogador* j);
+int buscar_pocoes(Jogador* j);
+
 int buscar_ganhos(Jogador* j);
 int buscar_percas(Jogador* j);
 
