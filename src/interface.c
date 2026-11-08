@@ -23,25 +23,20 @@ void atributos(Jogador* a, Jogador* b){
 
 }
 
-void acoes_text(int x){
-    printf("\n--------AÇOES-----------\n\n");
+void acoes_text(Jogador* j, int x){
+    printf("\n--------ACOES-----------\n\n");
     printf("Escolha sua acao Jogador %d:\n", x);
     printf("[1] Atacar (Dano: 10-15)\n");
-    printf("[2] Habilidade personagem (Custo: 10xp)\n");
-    printf("[3] Usar Itens \n");
-    printf("Digite um número: ");
+    printf("[2] Habilidade (Dano: 15-20, Custo: 10 estamina)\n");
+    printf("[3] Pocao de Cura | Qtd: %d\n", buscar_pocoes(j));
+    printf("Digite um numero: ");
 }
 
-//sug. Auri: pode separar em outra interface de ações;
 int dano(Jogador* j, int min, int max){
-    srand(vida_rest(j));
-    int dano = (rand() % (max - min + 1)) + min;
-
-    // sug. Auri: o reload tem que mostrar o feedback para o usuario
-    printf ("O inimigo recebeu %d de dano\n", dano);
-
-    return dano;
-
+    (void)j;
+    int d = (rand() % (max - min + 1)) + min;
+    printf("O inimigo recebeu %d de dano\n", d);
+    return d;
 }
 
 int resultado(Jogador* j){
@@ -52,11 +47,11 @@ int resultado(Jogador* j){
     return 1;
 }
 
-//sug. Auri: pode separar em outra interface de ações;
 void turnos(Jogador* a, Jogador* b, int x){
-        int acao;
+        int acao = 0;
 
-        acoes_text(x);
+        acoes_text(a, x);
+
 
         scanf("%d", &acao);
 
@@ -65,11 +60,11 @@ void turnos(Jogador* a, Jogador* b, int x){
         } else if (acao == 2 && buscar_estamina(a) > 0){
             receber_dano(b, dano(a, 15, 20));
             alterar_estamina(a, 5);
+        } else if (acao == 3){
+            usar_pocao(a);
         } else {
-            // sug. Auri: o reload tem que mostrar o feedback para o usuario
             printf("Ação invalida! Jogador perdeu o turno!\n");
         }
-
 }
 
 void limpar_tela() {

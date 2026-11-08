@@ -5,6 +5,7 @@
 #include "../include/cores.h"
 #define ESTAMINA_BASE 25
 #define VIDA_BASE 100
+#define CURA_POCAO 30
 
 struct Jogador {
     
@@ -16,7 +17,7 @@ struct Jogador {
     int estamina_total;
     int ganhos;
     int percas; 
-
+    int pocoes;
 };
 
 Jogador* criar(char *nome, int g, int p){
@@ -36,6 +37,7 @@ Jogador* criar(char *nome, int g, int p){
     j->vida_total = VIDA_BASE;
     j->ganhos = g;
     j->percas = p;
+    j->pocoes = 2;
 
     return j;
 }
@@ -46,9 +48,7 @@ int vida_rest(Jogador* j){
         printf("ERROR: acao invalida!.\n");
         return -1; 
     }
-
     return j->vida;
-
 }
 
 int buscar_estamina(Jogador* j){
@@ -128,6 +128,8 @@ void buscar_atributos(Jogador* j){
 
     if (barra_v == NULL || barra_e == NULL) {
         printf("Erro: Falha ao alocar memoria.\n");
+		free(barra_v);
+        free(barra_e);
         return;
     }
     printf("%s%sJogador %s%s:  \nVIDA:     %s\nESTAMINA: %s\n", 
@@ -181,5 +183,30 @@ void destruir(Jogador* j){
 
 }
 
+/* POCAO DE VIDA */
+int usar_pocao(Jogador* j){
+    if (!j) return -1;
 
+    if (j->pocoes <= 0){
+        printf("Pocao de cura ja foi utilizada.\n");
+        return -1;                     // perde a vez
+    }
 
+    if (j->vida >= j->vida_total){
+        printf("Vida cheia! Nao cura.\n");
+        return 0;                      // pocao NAO e gasta
+    }
+
+    int antes = j->vida;
+    j->vida += CURA_POCAO;
+    if (j->vida > j->vida_total) j->vida = j->vida_total;   // sem sobrecura
+    j->pocoes--;
+
+    printf("%s usou a Pocao de Cura! (+%d de vida)\n", j->nome, j->vida - antes);
+    return j->vida;
+}
+
+int buscar_pocoes(Jogador* j){
+    if (!j) return 0;
+    return j->pocoes;
+}
