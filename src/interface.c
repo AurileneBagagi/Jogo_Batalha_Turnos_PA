@@ -29,7 +29,8 @@ void acoes_text(int x){
     printf("[1] Atacar (Dano: 10-15)\n");
     printf("[2] Habilidade personagem (Custo: 10xp)\n");
     printf("[3] Usar Itens \n");
-    printf("Digite um número: ");
+    printf("[4] Defender\n");
+    printf("Digite um numero: ");
 }
 
 //sug. Auri: pode separar em outra interface de ações;
@@ -53,6 +54,7 @@ int resultado(Jogador* j){
 
 //sug. Auri: pode separar em outra interface de ações;
 void turnos(Jogador* a, Jogador* b, int x){
+		desativar_defesa(a);
         int acao;
 
         acoes_text(x);
@@ -64,7 +66,11 @@ void turnos(Jogador* a, Jogador* b, int x){
         } else if (acao == 2 && buscar_estamina(a) > 0){
             receber_dano(b, dano(a, 15, 20));
             alterar_estamina(a, 5);
-        } else {
+        } else if (acao == 4){
+        	ativar_defesa(a);
+        	recuperar_estamina(a, 5);
+        	printf("%s defendeu!\n", buscar_nome(a));
+		} else {
             // sug. Auri: o reload tem que mostrar o feedback para o usuario
             printf("Ação invalida! Jogador perdeu o turno!\n");
         }

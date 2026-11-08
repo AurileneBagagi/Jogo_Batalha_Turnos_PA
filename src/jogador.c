@@ -15,7 +15,8 @@ struct Jogador {
     int estamina;
     int estamina_total;
     int ganhos;
-    int percas; 
+    int percas;
+	int defendendo; 
 
 };
 
@@ -36,6 +37,7 @@ Jogador* criar(char *nome, int g, int p){
     j->vida_total = VIDA_BASE;
     j->ganhos = g;
     j->percas = p;
+    j->defendendo = 0;
 
     return j;
 }
@@ -88,17 +90,21 @@ int receber_dano(Jogador* j, int dano){
         printf("ERROR: acao invalida!.\n");
         return -1; 
     }
+    if(j->defendendo){
+    	dano = (dano + 1) / 2;
+    	printf("%s se defendeu! dano: %d\n", j->nome, dano);
+	}
 
     if (j->vida < dano){
         j->vida = 0;
         return j->vida;
-
     } else {
         j->vida-=dano;
         return j->vida;
     }
 
 }
+
 
 int alterar_estamina(Jogador* j, int perca){
 
@@ -115,7 +121,24 @@ int alterar_estamina(Jogador* j, int perca){
         printf("Recurso insuficiente!\n");
         return -1; 
     }
+}
+int recuperar_estamina(Jogador* j, int valor){
+	if(!j){
+		printf("ERRO: acao invalida!.\n");
+		return -1;
+	}
+	j->estamina += valor;
+	if (j->estamina > j->estamina_total){
+		j->estamina = j->estamina_total;
+	}
+	return j->estamina;
+}
 
+void ativar_defesa(Jogador* j){
+	if (j) j->defendendo = 1;
+}
+void desativar_defesa(Jogador* j){
+	if (j) j->defendendo = 0;
 }
 
 void buscar_atributos(Jogador* j){

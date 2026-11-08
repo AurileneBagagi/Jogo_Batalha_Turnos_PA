@@ -9,8 +9,11 @@ int vida_rest(Jogador* j);
 int buscar_estamina(Jogador* j);
 int receber_dano(Jogador* j, int dano);
 int alterar_estamina(Jogador* j, int dano);
+int recuperar_estamina(Jogador* j, int dano);
 int buscar_ganhos(Jogador* j);
 int buscar_percas(Jogador* j);
+void ativar_defesa(Jogador* j);
+void desativar_defesa(Jogador* j);
 
 
 void buscar_atributos(Jogador* j);
