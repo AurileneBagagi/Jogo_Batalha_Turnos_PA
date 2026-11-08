@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../include/interface.h"
+#include "../include/cores.h"
 
 void iniciar_jogo(){
 
@@ -13,7 +14,6 @@ void iniciar_jogo(){
 }
 
 void atributos(Jogador* a, Jogador* b){
-	limpar_tela();
     printf("\n---------------------\n");
     buscar_atributos(a);
     printf("-----------------------\n");
@@ -37,8 +37,10 @@ int dano(Jogador* j, int min, int max){
     srand(vida_rest(j));
     int dano = (rand() % (max - min + 1)) + min;
 
+	
+	limpar_tela();
     // sug. Auri: o reload tem que mostrar o feedback para o usuario
-    printf ("O inimigo recebeu %d de dano\n", dano);
+    printf ("%sO %s recebeu %d de dano\n%s",TXT_VERMELHO_B, buscar_nome(j), dano, RESET);
 
     return dano;
 

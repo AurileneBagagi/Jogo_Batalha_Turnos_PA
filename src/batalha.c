@@ -84,9 +84,8 @@ int main(){
         printf("ERROR: Não foi possivel cadastrar jogador\n");
         return 1;
     }
-    
+    limpar_tela();
     while (vida_rest(a)> 0 && vida_rest(b)> 0){
-
         atributos(a,b);
         turnos(a, b, 1);
         if(vida_rest(b)<=0) break;
