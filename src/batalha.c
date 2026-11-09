@@ -7,6 +7,8 @@
 #include "../include/interface.h"
 #include "../include/jogador.h"
 #include "../include/persistencia.h"
+#include "../include/inventario.h"
+#include "../include/itens.h"
 
 // string: precisa prevenir erros
 int string(char *destino, int x){
@@ -70,6 +72,7 @@ int main(){
     if (string(nome, 1) == 0) return 1;
     buscar(arq, nome, &ganhos, &percas);
     Jogador* a = criar(nome, ganhos, percas);
+    
 
     //Jogador* a = criar(nome);
     if (!a) {
@@ -88,9 +91,8 @@ int main(){
         printf("ERROR: Não foi possivel cadastrar jogador\n");
         return 1;
     }
-    
+    limpar_tela();
     while (vida_rest(a)> 0 && vida_rest(b)> 0){
-
         atributos(a,b);
         turnos(a, b);
         if(vida_rest(b)<=0) break;
