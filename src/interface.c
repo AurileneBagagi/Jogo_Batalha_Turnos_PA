@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../include/interface.h"
+#include "../include/cores.h"
 
 void iniciar_jogo(){
 
@@ -13,7 +14,6 @@ void iniciar_jogo(){
 }
 
 void atributos(Jogador* a, Jogador* b){
-	limpar_tela();
     printf("\n---------------------\n");
     buscar_atributos(a);
     printf("-----------------------\n");
@@ -35,7 +35,8 @@ void acoes_text(Jogador* j){
 int dano(Jogador* j, int min, int max){
     (void)j;
     int d = (rand() % (max - min + 1)) + min;
-    printf("O inimigo recebeu %d de dano\n", d);
+    limpar_tela();
+    printf ("%sO %s recebeu %d de dano\n%s",TXT_VERMELHO_B, buscar_nome(j), d, RESET);
     return d;
 }
 

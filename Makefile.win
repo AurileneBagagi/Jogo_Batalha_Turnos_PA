@@ -1,4 +1,4 @@
-# Project: batalhaDeTurnos
+# Project: BatalhaDeTurnos
 # Makefile created by Dev-C++ 5.11
 
 CPP      = g++.exe
@@ -9,7 +9,7 @@ LINKOBJ  = src/batalha.o src/interface.o src/jogador.o src/persistencia.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
-BIN      = batalhaDeTurnos.exe
+BIN      = BatalhaDeTurnos.exe
 CXXFLAGS = $(CXXINCS) 
 CFLAGS   = $(INCS) 
 RM       = rm.exe -f
@@ -33,5 +33,5 @@ src/interface.o: src/interface.c
 src/jogador.o: src/jogador.c
 	$(CC) -c src/jogador.c -o src/jogador.o $(CFLAGS)
 
-src/persistencia.o: src/persistencia.c include/persistencia.h include/jogador.h
+src/persistencia.o: src/persistencia.c
 	$(CC) -c src/persistencia.c -o src/persistencia.o $(CFLAGS)
