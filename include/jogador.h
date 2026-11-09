@@ -3,7 +3,7 @@
 
 typedef struct Jogador Jogador;
 
-Jogador* criar(char *nome, int g, int p);
+Jogador* criar(char *nome);
 
 int vida_rest(Jogador* j);
 int buscar_estamina(Jogador* j);
@@ -13,8 +13,6 @@ int alterar_estamina(Jogador* j, int dano);
 int usar_pocao(Jogador* j);
 int buscar_pocoes(Jogador* j);
 
-int buscar_ganhos(Jogador* j);
-int buscar_percas(Jogador* j);
 
 void buscar_atributos(Jogador* j);
 void destruir(Jogador* j);

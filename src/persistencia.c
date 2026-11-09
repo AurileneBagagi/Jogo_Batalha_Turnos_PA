@@ -74,35 +74,7 @@ void ler(Arquivo* a){
     
 }
 
-int buscar(Arquivo *a, char* n, int *g, int *p){
-
-    if (!a || !a->arq || !n || !g || !p) {
-        printf("ERROR: parametros invalidos!\n");
-        return 0;
-    }
-
-    rewind(a->arq);
-    char linha[256];
-    char nome[50];
-    int ganho, percas;
-
-    while (fgets(linha, sizeof(linha), a->arq) != NULL){
-      if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
-        
-        if(strcmp(n, nome) == 0){
-            *g = ganho;
-            *p = percas;
-
-            return 1;
-        }
-      }
-    }
-
-    return 0;
-
-}
-
-int inserir(Arquivo *a, const char* n, int g, int p){
+static int inserir_jogador(Arquivo *a, const char* n, int g, int p){
     
     if (!a || !a->arq || !n) {
         printf("ERROR: parametros invalidos!\n");
@@ -127,23 +99,25 @@ int inserir(Arquivo *a, const char* n, int g, int p){
     
 }
 
-void atualizar_resultado(int *g, int *p, char i){
+static void atualizar_resultado(int *vitoria, int *derrota, ResultadoPartida resultado){
 
-    if (i == 'g'){
-        *g += 1;
-    } else if ( i == 'p'){
-        *p += 1;
-    } else {
-        printf("ERROR: parametro invalido!");
-        return;
+    switch (resultado){
+        case RESULTADO_VITORIA:
+            *vitoria+=1;
+            break;
+        case RESULTADO_DERROTA:
+            *derrota+=1;
+            break;
+        
+        default:
+            printf("ERROR: parametro invalido!");
+            break;
     }
-    
-
 }
 
-int atualizar(Arquivo *a, const char* n, int g, int p, char i){
+int salvar_resultados(Arquivo *a, const char* n, ResultadoPartida resultado){
 
-    if (!a || !n || g < 0|| p < 0) {
+    if (!a || !n ) {
         printf("ERROR: parametros invalidos!\n");
         return 0;
     }
@@ -175,11 +149,11 @@ int atualizar(Arquivo *a, const char* n, int g, int p, char i){
 
       if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
         
-        if(strcmp(n, nome) == 0 && g == ganho && p == percas){
+        if(strcmp(n, nome) == 0){
 
-            atualizar_resultado(&g, &p, i);
+            atualizar_resultado(&ganho, &percas, resultado);
            
-            fprintf(temp, "%s;%d;%d\n", nome, g, p);
+            fprintf(temp, "%s;%d;%d\n", nome, ganho, percas);
             
             x = 1;
             continue;
@@ -202,9 +176,9 @@ int atualizar(Arquivo *a, const char* n, int g, int p, char i){
     a->arq = fopen(PATH, "r+");
 
     if (x == 0){
-        atualizar_resultado(&g, &p, i);
-        inserir(a, n, g, p);
-        x = 1;
+        ganho = 0, percas = 0;
+        atualizar_resultado(&ganho, &percas, resultado);
+        x = inserir_jogador(a, n, ganho, percas);
     }
 
     return x;

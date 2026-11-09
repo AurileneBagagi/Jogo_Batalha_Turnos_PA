@@ -15,12 +15,11 @@ struct Jogador {
     int vida_total;
     int estamina;
     int estamina_total;
-    int ganhos;
-    int percas; 
+
     int pocoes;
 };
 
-Jogador* criar(char *nome, int g, int p){
+Jogador* criar(char *nome){
     Jogador* j = (Jogador*) malloc(sizeof(struct Jogador));
 
     if(!j) {
@@ -35,8 +34,7 @@ Jogador* criar(char *nome, int g, int p){
     j->estamina_total = ESTAMINA_BASE;
     j->vida = VIDA_BASE;
     j->vida_total = VIDA_BASE;
-    j->ganhos = g;
-    j->percas = p;
+
     j->pocoes = 2;
 
     return j;
@@ -59,26 +57,6 @@ int buscar_estamina(Jogador* j){
     }
 
     return j->estamina;
-}
-
-int buscar_ganhos(Jogador* j){
-
-    if (!j) {
-        printf("ERROR: acao invalida!.\n");
-        return -1; 
-    }
-
-    return j->ganhos;
-}
-
-int buscar_percas(Jogador* j){
-
-    if (!j) {
-        printf("ERROR: acao invalida!.\n");
-        return -1; 
-    }
-
-    return j->percas;
 }
 
 

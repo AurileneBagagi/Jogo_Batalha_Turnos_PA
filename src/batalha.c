@@ -10,8 +10,7 @@
 #include "../include/inventario.h"
 #include "../include/itens.h"
 
-// string: precisa prevenir erros
-int string(char *destino, int x){
+int receber_nome(char *destino, int x){
 
     char nome[50];
     
@@ -47,14 +46,12 @@ int string(char *destino, int x){
 
 void atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
     resultado(a);
-    atualizar(arq, buscar_nome(a), buscar_ganhos(a), buscar_percas(a), 'g');
-    atualizar(arq, buscar_nome(b), buscar_ganhos(b), buscar_percas(b), 'p');
+    salvar_resultados(arq, buscar_nome(a), RESULTADO_VITORIA);
+    salvar_resultados(arq, buscar_nome(b), RESULTADO_DERROTA);
 }
 
 
 int main(){
-
-    int ganhos = 0, percas = 0;
 
     iniciar_jogo();
     srand(time(NULL));
@@ -69,24 +66,17 @@ int main(){
     ler(arq);
 
     char nome[50];
-    if (string(nome, 1) == 0) return 1;
-    buscar(arq, nome, &ganhos, &percas);
-    Jogador* a = criar(nome, ganhos, percas);
+    if (receber_nome(nome, 1) == 0) return 1;
+    Jogador* a = criar(nome);
     
-
-    //Jogador* a = criar(nome);
     if (!a) {
         printf("ERROR: Não foi possivel cadastrar jogador\n");
         return 1;
     }
 
-    ganhos = 0, percas = 0;
-    if (string(nome, 2) == 0) return 1;
-    buscar(arq, nome, &ganhos, &percas);
-    Jogador* b = criar(nome, ganhos, percas);
+    if (receber_nome(nome, 2) == 0) return 1;
+    Jogador* b = criar(nome);
 
-    //Jogador* b = criar(nome);
-    // FIM;
     if (!b) {
         printf("ERROR: Não foi possivel cadastrar jogador\n");
         return 1;
@@ -103,7 +93,6 @@ int main(){
 
     atributos(a,b);
 
-     //Aurilene: falta organizar umas chamadas de ateração do arquivo. 
     if (vida_rest(a)> vida_rest(b)){ 
         atualiza_resultado(arq, a, b);
     } else{
