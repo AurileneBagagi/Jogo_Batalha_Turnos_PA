@@ -3,6 +3,8 @@
 #include <string.h>
 #include "../include/jogador.h"
 #include "../include/cores.h"
+#include "../include/itens.h"
+#include "../include/inventario.h"
 #define ESTAMINA_BASE 25
 #define VIDA_BASE 100
 
@@ -16,6 +18,7 @@ struct Jogador {
     int estamina_total;
     int ganhos;
     int percas; 
+    Inventario *inv;
 
 };
 
@@ -36,6 +39,9 @@ Jogador* criar(char *nome, int g, int p){
     j->vida_total = VIDA_BASE;
     j->ganhos = g;
     j->percas = p;
+    j->inv = criar_inventario();
+    
+    adicionar_item(j->inv, POT_VIDA_P, 5); // Exemplo de adição de item ao jogador
 
     return j;
 }
