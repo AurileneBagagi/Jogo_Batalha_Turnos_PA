@@ -36,7 +36,7 @@ int dano(Jogador* j, int min, int max){
     (void)j;
     int d = (rand() % (max - min + 1)) + min;
     limpar_tela();
-    printf ("%sO %s recebeu %d de dano\n%s",TXT_VERMELHO_B, buscar_nome(j), d, RESET);
+    printf ("%sO jogador \"%s\" deu %d de dano\n%s",TXT_VERMELHO_B, buscar_nome(j), d, RESET);
     return d;
 }
 
@@ -68,7 +68,8 @@ void turnos(Jogador* a, Jogador* b){
         } else if (acao == 3){
             usar_pocao(a);
         } else {
-            printf("Ação invalida! Jogador perdeu o turno!\n");
+            limpar_tela();
+            printf("Ação invalida! Jogador \"%s\" perdeu o turno!\n", buscar_nome(a));
         }
 }
 
