@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../include/jogador.h"
 #include "../include/cores.h"
+#include "../include/interface.h"
 #define ESTAMINA_BASE 25
 #define VIDA_BASE 100
 #define CURA_POCAO 30

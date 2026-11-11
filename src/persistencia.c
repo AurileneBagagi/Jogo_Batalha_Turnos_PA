@@ -74,6 +74,72 @@ void ler(Arquivo* a){
     
 }
 
+// Um jogador lido do arquivo (usado so para montar o ranking)
+typedef struct {
+    char nome[50];
+    int ganhos;
+} Registro;
+
+// O qsort chama esta funcao para decidir quem vem antes na lista.
+// Retorna negativo se x vem antes de y, positivo se vem depois, 0 se empatam.
+static int comparar(const void* x, const void* y){
+    const Registro* a = (const Registro*) x;
+    const Registro* b = (const Registro*) y;
+
+    if (a->ganhos != b->ganhos) return b->ganhos - a->ganhos;   // mais vitorias primeiro
+    return strcmp(a->nome, b->nome);                            // empate: ordem alfabetica
+}
+
+// Mostra os 'limite' melhores jogadores (limite <= 0 mostra todos).
+void ranking(Arquivo* a, int limite){
+
+    if (!a || !a->arq) {
+        printf("ERROR: Arquivo invalido ou nao aberto.\n");
+        return;
+    }
+
+    char linha[256];
+    Registro r;
+    int total = 0;
+
+    // 1a passada: conta quantos jogadores existem
+    rewind(a->arq);
+    while (fgets(linha, sizeof(linha), a->arq) != NULL){
+        if (sscanf(linha, "%49[^;];%d", r.nome, &r.ganhos) == 2) total++;
+    }
+
+    if (total == 0){
+        printf("Ainda nao ha jogadores no ranking.\n");
+        return;
+    }
+
+    Registro* lista = (Registro*) malloc(total * sizeof(Registro));
+    if (!lista){
+        printf("ERROR: sem memoria para montar o ranking\n");
+        return;
+    }
+
+    // 2a passada: guarda cada jogador na lista
+    int n = 0;
+    rewind(a->arq);
+    while (n < total && fgets(linha, sizeof(linha), a->arq) != NULL){
+        if (sscanf(linha, "%49[^;];%d", lista[n].nome, &lista[n].ganhos) == 2) n++;
+    }
+
+    qsort(lista, n, sizeof(Registro), comparar);
+
+    if (limite <= 0 || limite > n) limite = n;
+
+    printf("====== RANKING DE VITORIAS ======\n");
+    printf(" #  NOME             | VITORIAS\n");
+    for (int i = 0; i < limite; i++){
+        printf("%2d  %-16s | %-8d\n", i + 1, lista[i].nome, lista[i].ganhos);
+    }
+    printf("=================================\n");
+
+    free(lista);
+}
+
 static int inserir_jogador(Arquivo *a, const char* n, int g, int p){
     
     if (!a || !a->arq || !n) {

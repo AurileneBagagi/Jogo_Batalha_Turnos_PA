@@ -64,7 +64,7 @@ int main(){
         atualiza_resultado(arq, b, a);
     }
 
-    ler(arq);
+    ranking(arq, 5);
 
     //GERENCIAMENTO DE MEMORIA
 
