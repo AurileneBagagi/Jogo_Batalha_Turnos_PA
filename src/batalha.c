@@ -10,40 +10,6 @@
 #include "../include/inventario.h"
 #include "../include/itens.h"
 
-int receber_nome(char *destino, int x){
-
-    char nome[50];
-    
-    printf("Digite o nome do Jogador %d: ", x);
-    fflush(stdout);
-    
-    if (fgets(nome, sizeof(nome), stdin) != NULL) {
-        size_t tam = strlen(nome);
-        if (tam > 0 && nome[tam - 1] == '\n') {
-            nome[tam - 1] = '\0';
-        } else {
-            printf("\nERROR: Nome do jogador excedeu o tamanho de 50 caracteres\n");
-            return 0;
-        }
-
-        if (nome[0] == '\0') {
-            printf("\nERROR: Nada foi digitado\n");
-            return 0;
-        }
-    }
-
-    int i = 0;
-    while(nome[i] != '\0'){
-        *destino = nome[i];
-        destino++;
-        i++;
-    }
-
-    *destino = '\0';
-
-    return 1;
-}; 
-
 void atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
     resultado(a);
     salvar_resultados(arq, buscar_nome(a), RESULTADO_VITORIA);
@@ -56,7 +22,6 @@ int main(){
     iniciar_jogo();
     srand(time(NULL));
 
-    //Aurilene: falta organizar umas coisas do arquivo. 
     Arquivo *arq = abrir();
     if (!arq) {
         printf("ERROR: Não foi possivel abrir arquivo!\n");
