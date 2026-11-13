@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../include/estatisticas.h"
 
 //é um vetor dinamico
@@ -73,4 +74,19 @@ void destruir_estatisticas(ListaEstatisticas *lista){
 
     free(lista->itens);
     free(lista);
+}
+
+static int comparar_estatisticas(const void *x, const void *y){
+	const EstatisticaJogador *a = (const EstatisticaJogador*) x;
+    const EstatisticaJogador *b = (const EstatisticaJogador*) y;
+    
+    if(a->vitorias > b->vitorias) return -1;
+    if(a->vitorias < b->vitorias) return 1;
+    return strcmp(a->nome, b->nome);
+}
+
+void ordenar_estatisticas_por_vitorias(ListaEstatisticas *lista){
+	if(!lista || lista->quantidade < 2) return;
+	
+	qsort(lista->itens, lista->quantidade, sizeof(lista->itens[0]), comparar_estatisticas);
 }

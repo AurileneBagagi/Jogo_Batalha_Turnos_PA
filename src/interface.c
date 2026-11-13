@@ -124,6 +124,28 @@ void mostrar_historico(const ListaEstatisticas *estatisticas){
 
     printf("========================================\n");
 }
+void mostrar_ranking(const ListaEstatisticas *estatisticas, int limite){
+    if (!estatisticas){
+        printf("ERROR: historico invalido!\n");
+        return;
+    }
+
+    int total = (int) quantidade_estatisticas(estatisticas);
+    if (total == 0){
+        printf("Ainda nao ha jogadores no ranking.\n");
+        return;
+    }
+
+    if (limite <= 0 || limite > total) limite = total;
+
+    printf("====== RANKING DE VITORIAS ======\n");
+    printf(" #  NOME             | VITORIAS\n");
+    for (int i = 0; i < limite; i++){
+        const EstatisticaJogador *linha = obter_estatistica(estatisticas, (size_t) i);
+        printf("%2d  %-16s | %-8d\n", i + 1, linha->nome, linha->vitorias);
+    }
+    printf("=================================\n");
+}
 
 void limpar_tela() {
     printf("\033[H\033[2J\033[3J");

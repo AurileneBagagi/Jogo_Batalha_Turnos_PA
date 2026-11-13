@@ -1,3 +1,4 @@
+
 #ifndef ESTATISTICAS_H
 #define ESTATISTICAS_H
 
@@ -18,5 +19,6 @@ int adicionar_estatistica(ListaEstatisticas *lista,
 size_t quantidade_estatisticas(const ListaEstatisticas *lista);
 const EstatisticaJogador* obter_estatistica(const ListaEstatisticas *lista,
                                              size_t indice);
+void ordenar_estatisticas_por_vitorias(ListaEstatisticas *lista);
 
 #endif

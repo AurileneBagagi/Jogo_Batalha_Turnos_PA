@@ -35,6 +35,7 @@ int main(){
 
     mostrar_historico(estatisticas);
     destruir_estatisticas(estatisticas);
+    estatisticas = NULL;
 
     // JOGADORES
     char nome[50];
@@ -74,7 +75,15 @@ int main(){
         atualiza_resultado(arq, b, a);
     }
 
-    ranking(arq, 5);
+    estatisticas = ler_estatisticas(arq);
+    if (estatisticas) {
+        ordenar_estatisticas_por_vitorias(estatisticas);
+        mostrar_ranking(estatisticas, 5);
+        destruir_estatisticas(estatisticas);
+        estatisticas = NULL;
+    } else {
+        printf("ERROR: Não foi possivel montar o ranking!\n");
+    }
 
     //GERENCIAMENTO DE MEMORIA
 
