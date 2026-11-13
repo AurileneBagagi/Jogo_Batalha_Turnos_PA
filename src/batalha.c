@@ -89,8 +89,8 @@ int main(){
     }
 
     if (salvar != 1){
-        destruir(a);
-        destruir(b);
+        destruir_jogador(a);
+        destruir_jogador(b);
         fechar(arq);
         printf("ERROR: Não foi possivel salvar resultado\n");
         return 1;
