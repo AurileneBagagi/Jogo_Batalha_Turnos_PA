@@ -3,5 +3,5 @@
 *.layout
 *.o
 bin/
-*.csv
+data/*.csv
 scripts/
