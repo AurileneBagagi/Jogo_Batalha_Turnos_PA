@@ -7,70 +7,51 @@
 #include "../include/interface.h"
 #include "../include/jogador.h"
 #include "../include/persistencia.h"
-#include "../include/inventario.h"
-#include "../include/itens.h"
 
-int receber_nome(char *destino, int x){
 
-    char nome[50];
-    
-    printf("Digite o nome do Jogador %d: ", x);
-    fflush(stdout);
-    
-    if (fgets(nome, sizeof(nome), stdin) != NULL) {
-        size_t tam = strlen(nome);
-        if (tam > 0 && nome[tam - 1] == '\n') {
-            nome[tam - 1] = '\0';
-        } else {
-            printf("\nERROR: Nome do jogador excedeu o tamanho de 50 caracteres\n");
-            return 0;
-        }
+int atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
+    resultado_partida(a);
+    int atu_a = salvar_resultados(arq, buscar_nome(a), RESULTADO_VITORIA);
+    int atu_b = salvar_resultados(arq, buscar_nome(b), RESULTADO_DERROTA);
 
-        if (nome[0] == '\0') {
-            printf("\nERROR: Nada foi digitado\n");
-            return 0;
-        }
-    }
+    if (atu_a != 1 ||atu_b != 1)return -1;
+    else return 1;
 
-    int i = 0;
-    while(nome[i] != '\0'){
-        *destino = nome[i];
-        destino++;
-        i++;
-    }
-
-    *destino = '\0';
-
-    return 1;
-}; 
-
-void atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
-    resultado(a);
-    salvar_resultados(arq, buscar_nome(a), RESULTADO_VITORIA);
-    salvar_resultados(arq, buscar_nome(b), RESULTADO_DERROTA);
 }
 
 
 int main(){
 
-    iniciar_jogo();
+    bem_vindo();
     srand(time(NULL));
 
-    //Aurilene: falta organizar umas coisas do arquivo. 
+    //ARQUIVO
     Arquivo *arq = abrir();
     if (!arq) {
         printf("ERROR: Não foi possivel abrir arquivo!\n");
         return 1;
     }
 
-    ler(arq);
+    //HISTORICO
+    ListaEstatisticas *estatisticas = ler_estatisticas(arq);
+    if (!estatisticas) {
+        printf("ERROR: Não foi possivel obter estatisticas!\n");
+        fechar(arq);
+        return 1;
+    }
 
+    mostrar_historico(estatisticas);
+    destruir_estatisticas(estatisticas);
+
+    // JOGADORES
     char nome[50];
     if (receber_nome(nome, 1) == 0) return 1;
     Jogador* a = criar(nome);
     
     if (!a) {
         printf("ERROR: Não foi possivel cadastrar jogador\n");
+        fechar(arq);
+
         return 1;
     }
 
@@ -79,9 +60,15 @@ int main(){
 
     if (!b) {
         printf("ERROR: Não foi possivel cadastrar jogador\n");
+        fechar(arq);
+        destruir_jogador(a);
+
         return 1;
     }
+
+    //JOGO 
     limpar_tela();
+
     while (vida_rest(a)> 0 && vida_rest(b)> 0){
         atributos(a,b);
         turnos(a, b);
@@ -93,23 +80,41 @@ int main(){
 
     atributos(a,b);
 
+    
+    int salvar = 0;
     if (vida_rest(a)> vida_rest(b)){ 
-        atualiza_resultado(arq, a, b);
+        salvar = atualiza_resultado(arq, a, b);
     } else{
-        atualiza_resultado(arq, b, a);
+        salvar = atualiza_resultado(arq, b, a);
     }
 
-    ler(arq);
+    if (salvar != 1){
+        destruir_jogador(a);
+        destruir_jogador(b);
+        fechar(arq);
+        printf("ERROR: Não foi possivel salvar resultado\n");
+        return 1;
+    }
+
+    estatisticas = ler_estatisticas(arq);
+    if (estatisticas) {
+        ordenar_estatisticas_por_vitorias(estatisticas);
+        mostrar_ranking(estatisticas, 5);
+        destruir_estatisticas(estatisticas);
+        estatisticas = NULL;
+    } else {
+        printf("ERROR: Não foi possivel montar o ranking!\n");
+    }
 
     //GERENCIAMENTO DE MEMORIA
 
     fechar(arq);
     arq = NULL;
 
-    destruir(a);
+    destruir_jogador(a);
     a = NULL;
 
-    destruir(b);
+    destruir_jogador(b);
     b = NULL;
 
     return 0;

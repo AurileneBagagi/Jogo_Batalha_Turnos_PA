@@ -6,16 +6,15 @@ typedef struct Jogador Jogador;
 Jogador* criar(char *nome);
 
 int vida_rest(Jogador* j);
-int buscar_estamina(Jogador* j);
+
 int receber_dano(Jogador* j, int dano);
 int alterar_estamina(Jogador* j, int dano);
 
 int usar_pocao(Jogador* j);
 int buscar_pocoes(Jogador* j);
 
-
 void buscar_atributos(Jogador* j);
-void destruir(Jogador* j);
+void destruir_jogador(Jogador* j);
 
 const char* buscar_nome(Jogador* j);
 char* criar_barra(char* cor, int quantidade, char *barra, int total);

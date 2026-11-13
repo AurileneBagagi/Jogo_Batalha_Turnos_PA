@@ -1,6 +1,8 @@
 #ifndef PERSISTENCIA_H
 #define PERSISTENCIA_H
 
+#include "estatisticas.h"
+
 typedef enum {
     RESULTADO_VITORIA,
     RESULTADO_DERROTA
@@ -9,8 +11,9 @@ typedef enum {
 typedef struct Arquivo Arquivo;
 
 Arquivo* abrir();
+ListaEstatisticas* ler_estatisticas(Arquivo* a);
+
 void fechar(Arquivo* a);
-void ler(Arquivo* a); // auri: ainda vou atualizar aqui.
 
 int salvar_resultados(Arquivo *a, const char* n, ResultadoPartida resultado);
 

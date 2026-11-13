@@ -3,7 +3,8 @@
 #include <string.h>
 #include "../include/jogador.h"
 #include "../include/cores.h"
-#define ESTAMINA_BASE 25
+
+#define ESTAMINA_BASE 30
 #define VIDA_BASE 100
 #define CURA_POCAO 30
 
@@ -49,17 +50,6 @@ int vida_rest(Jogador* j){
     return j->vida;
 }
 
-int buscar_estamina(Jogador* j){
-
-    if (!j) {
-        printf("ERROR: acao invalida!.\n");
-        return -1; 
-    }
-
-    return j->estamina;
-}
-
-
 int receber_dano(Jogador* j, int dano){
 
     if (!j) {
@@ -89,10 +79,7 @@ int alterar_estamina(Jogador* j, int perca){
         j->estamina-=perca;
         return j->estamina;
 
-    } else {
-        printf("Recurso insuficiente!\n");
-        return -1; 
-    }
+    } else return -1; 
 
 }
 
@@ -155,7 +142,7 @@ const char* buscar_nome(Jogador* j){
     return j->nome;
 }
 
-void destruir(Jogador* j){
+void destruir_jogador(Jogador* j){
 
     if (j) free(j);
 

@@ -13,9 +13,6 @@ struct Arquivo {
 
 };
 
-//Aurilene: é preciso organizar ainda as chamadas de cada função.
-// Implementar a atualização, se já tiver será atualizado os dados e etc....
-
 static void verifica(){
 
     FILE *arq = fopen(PATH, "r");
@@ -50,28 +47,37 @@ Arquivo* abrir(){
 
 }
 
-void ler(Arquivo* a){
-
+ListaEstatisticas* ler_estatisticas(Arquivo* a){
     if (!a || !a->arq) {
         printf("ERROR: Arquivo invalido ou nao aberto.\n");
-        return;
+        return NULL;
     }
+
+    ListaEstatisticas *estatisticas = criar_estatisticas();
+    if (!estatisticas) return NULL;
 
     rewind(a->arq);
     char linha[256];
-    char nome[50];
-    int ganho, percas;
-
-    printf("=============== JOGADORES ===============\n");
-    printf("NOME             | GANHOU |  PERDEU \n");
+    EstatisticaJogador estatistica;
 
     while (fgets(linha, sizeof(linha), a->arq) != NULL){
-      if (sscanf(linha, "%49[^;];%d;%d", nome, &ganho, &percas) == 3){
-        printf(" %-16s| %-6d | %-6d\n", nome, ganho, percas);
-      }
+        if (sscanf(linha, "%49[^;];%d;%d",
+                   estatistica.nome,
+                   &estatistica.vitorias,
+                   &estatistica.derrotas) == 3
+            && !adicionar_estatistica(estatisticas, &estatistica)){
+            destruir_estatisticas(estatisticas);
+            return NULL;
+        }
     }
-    printf("========================================\n");
-    
+
+    if (ferror(a->arq)){
+        printf("ERROR: falha ao ler arquivo.\n");
+        destruir_estatisticas(estatisticas);
+        return NULL;
+    }
+
+    return estatisticas;
 }
 
 static int inserir_jogador(Arquivo *a, const char* n, int g, int p){
