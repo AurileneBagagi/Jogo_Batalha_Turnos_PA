@@ -7,7 +7,6 @@
 void bem_vindo();
 void turnos(Jogador* a, Jogador* b);
 
-void atributos(Jogador* a, Jogador* b);  /* apagar*/ 
 void acoes_texto(Jogador* j);
 
 int resultado_partida(Jogador* j);
@@ -18,7 +17,6 @@ void mostrar_ranking(const ListaEstatisticas *estatisticas, int limite);
 
 int dano(Jogador* j, int min, int max);
 void limpar_tela();
-void distribuir_pontos(Jogador* j);  /* apagar*/ 
 void pocao(Jogador* j);
 
 #endif 
