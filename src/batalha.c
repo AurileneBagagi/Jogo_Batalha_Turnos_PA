@@ -7,8 +7,7 @@
 #include "../include/interface.h"
 #include "../include/jogador.h"
 #include "../include/persistencia.h"
-#include "../include/inventario.h"
-#include "../include/itens.h"
+
 
 void atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
     resultado(a);
@@ -28,8 +27,16 @@ int main(){
         return 1;
     }
 
-    ler(arq);
+    ListaEstatisticas *estatisticas = ler_estatisticas(arq);
+    if (!estatisticas) {
+        fechar(arq);
+        return 1;
+    }
 
+    mostrar_historico(estatisticas);
+    destruir_estatisticas(estatisticas);
+
+    // JOGADORES
     char nome[50];
     if (receber_nome(nome, 1) == 0) return 1;
     Jogador* a = criar(nome);
@@ -46,7 +53,9 @@ int main(){
         printf("ERROR: Não foi possivel cadastrar jogador\n");
         return 1;
     }
+
     limpar_tela();
+
     while (vida_rest(a)> 0 && vida_rest(b)> 0){
         atributos(a,b);
         turnos(a, b);
@@ -55,6 +64,7 @@ int main(){
         atributos(a, b);
         turnos(b, a);
     }
+
 
     atributos(a,b);
 

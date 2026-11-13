@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "../include/interface.h"
 #include "../include/cores.h"
+
 
 void iniciar_jogo(){
 
@@ -105,6 +107,23 @@ int receber_nome(char *destino, int x){
 
     return 1;
 }; 
+
+void mostrar_historico(const ListaEstatisticas *estatisticas){
+    if (!estatisticas){
+        printf("ERROR: historico invalido!.\n");
+        return;
+    }
+
+    printf("=============== JOGADORES ===============\n");
+    printf("NOME             | GANHOU |  PERDEU \n");
+
+    for (size_t i = 0; i < quantidade_estatisticas(estatisticas); i++){
+        const EstatisticaJogador *linha = obter_estatistica(estatisticas, i);
+        printf(" %-16s| %-6d | %-6d\n", linha->nome, linha->vitorias,  linha->derrotas);
+    }
+
+    printf("========================================\n");
+}
 
 void limpar_tela() {
     printf("\033[H\033[2J\033[3J");
