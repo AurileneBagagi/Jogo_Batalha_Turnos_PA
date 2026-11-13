@@ -150,8 +150,7 @@ void destruir_jogador(Jogador* j){
 
 /* POCAO DE VIDA */
 int usar_pocao(Jogador* j){
-    if (!j) return -1;
-	limpar_tela();
+    if (!j) return -1;;
     if (j->pocoes <= 0){
         printf("Pocao de cura ja foi utilizada.\n");
         return -1;                     // perde a vez

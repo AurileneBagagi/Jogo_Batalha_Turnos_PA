@@ -7,6 +7,7 @@
 void bem_vindo();
 void turnos(Jogador* a, Jogador* b);
 
+void atributos(Jogador* a, Jogador* b); 
 void acoes_texto(Jogador* j);
 
 int resultado_partida(Jogador* j);
