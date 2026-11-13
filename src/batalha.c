@@ -9,33 +9,39 @@
 #include "../include/persistencia.h"
 
 
-void atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
-    resultado(a);
-    salvar_resultados(arq, buscar_nome(a), RESULTADO_VITORIA);
-    salvar_resultados(arq, buscar_nome(b), RESULTADO_DERROTA);
+int atualiza_resultado(Arquivo* arq, Jogador* a, Jogador* b){
+    resultado_partida(a);
+    int atu_a = salvar_resultados(arq, buscar_nome(a), RESULTADO_VITORIA);
+    int atu_b = salvar_resultados(arq, buscar_nome(b), RESULTADO_DERROTA);
+
+    if (atu_a != 1 ||atu_b != 1)return -1;
+    else return 1;
+
 }
 
 
 int main(){
 
-    iniciar_jogo();
+    bem_vindo();
     srand(time(NULL));
 
+    //ARQUIVO
     Arquivo *arq = abrir();
     if (!arq) {
         printf("ERROR: Não foi possivel abrir arquivo!\n");
         return 1;
     }
 
+    //HISTORICO
     ListaEstatisticas *estatisticas = ler_estatisticas(arq);
     if (!estatisticas) {
+        printf("ERROR: Não foi possivel obter estatisticas!\n");
         fechar(arq);
         return 1;
     }
 
     mostrar_historico(estatisticas);
     destruir_estatisticas(estatisticas);
-    estatisticas = NULL;
 
     // JOGADORES
     char nome[50];
@@ -44,6 +50,8 @@ int main(){
     
     if (!a) {
         printf("ERROR: Não foi possivel cadastrar jogador\n");
+        fechar(arq);
+
         return 1;
     }
 
@@ -52,9 +60,13 @@ int main(){
 
     if (!b) {
         printf("ERROR: Não foi possivel cadastrar jogador\n");
+        fechar(arq);
+        destruir_jogador(a);
+
         return 1;
     }
 
+    //JOGO 
     limpar_tela();
 
     while (vida_rest(a)> 0 && vida_rest(b)> 0){
@@ -66,13 +78,22 @@ int main(){
         turnos(b, a);
     }
 
-
     atributos(a,b);
 
+    
+    int salvar = 0;
     if (vida_rest(a)> vida_rest(b)){ 
-        atualiza_resultado(arq, a, b);
+        salvar = atualiza_resultado(arq, a, b);
     } else{
-        atualiza_resultado(arq, b, a);
+        salvar = atualiza_resultado(arq, b, a);
+    }
+
+    if (salvar != 1){
+        destruir(a);
+        destruir(b);
+        fechar(arq);
+        printf("ERROR: Não foi possivel salvar resultado\n");
+        return 1;
     }
 
     estatisticas = ler_estatisticas(arq);
@@ -90,10 +111,10 @@ int main(){
     fechar(arq);
     arq = NULL;
 
-    destruir(a);
+    destruir_jogador(a);
     a = NULL;
 
-    destruir(b);
+    destruir_jogador(b);
     b = NULL;
 
     return 0;

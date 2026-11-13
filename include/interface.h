@@ -4,13 +4,15 @@
 #include "jogador.h"
 #include "estatisticas.h"
 
-void iniciar_jogo();
+void bem_vindo();
 void turnos(Jogador* a, Jogador* b);
 
 void atributos(Jogador* a, Jogador* b);  /* apagar*/ 
-void acoes_text(Jogador* j);
-int resultado(Jogador* j);
+void acoes_texto(Jogador* j);
+
+int resultado_partida(Jogador* j);
 int receber_nome(char *destino, int x);
+
 void mostrar_historico(const ListaEstatisticas *estatisticas);
 void mostrar_ranking(const ListaEstatisticas *estatisticas, int limite);
 

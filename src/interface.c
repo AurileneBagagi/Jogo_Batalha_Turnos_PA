@@ -6,7 +6,7 @@
 #include "../include/cores.h"
 
 
-void iniciar_jogo(){
+void bem_vindo(){
 
     printf("=========================================\n");
     printf("            BEM VINDOS(AS) AO     \n");
@@ -24,11 +24,11 @@ void atributos(Jogador* a, Jogador* b){
 
 }
 
-void acoes_text(Jogador* j){
+void acoes_texto(Jogador* j){
     printf("\n--------ACOES-----------\n\n");
     printf("Escolha sua acao Jogador \"%s\":\n", buscar_nome(j));
-    printf("[1] Atacar (Dano: 10-20)\n");
-    printf("[2] Habilidade (Dano: 21-31, Custo: 10 estamina)\n");
+    printf("[1] Atacar (Dano: 10-17)\n");
+    printf("[2] Habilidade (Dano: 20-25, Custo: 10 estamina)\n");
     printf("[3] Pocao de Cura | Qtd: %d\n", buscar_pocoes(j));
     printf("Digite um numero: ");
 }
@@ -41,7 +41,7 @@ int dano(Jogador* j, int min, int max){
     return d;
 }
 
-int resultado(Jogador* j){
+int resultado_partida(Jogador* j){
     printf("\n========================================\n");
     printf("PARABENS! \"%s\" ganhou o jogo!\n", buscar_nome(j));
     printf("========================================\n");
@@ -52,7 +52,7 @@ int resultado(Jogador* j){
 void turnos(Jogador* a, Jogador* b){
         int acao = 0;
 
-        acoes_text(a);
+        acoes_texto(a);
 
         if (scanf("%d", &acao) != 1) {
             int caractere;
@@ -62,10 +62,9 @@ void turnos(Jogador* a, Jogador* b){
         }
 
         if (acao == 1){
-            receber_dano(b, dano(a, 10, 20));
-        } else if (acao == 2 && buscar_estamina(a) > 0){
-            receber_dano(b, dano(a, 21, 31));
-            alterar_estamina(a, 10);
+            receber_dano(b, dano(a, 10, 17));
+        } else if (acao == 2 && alterar_estamina(a, 10) >= 0){
+            receber_dano(b, dano(a, 20, 25));
         } else if (acao == 3){
             usar_pocao(a);
         } else {
