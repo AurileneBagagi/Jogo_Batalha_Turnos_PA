@@ -18,7 +18,6 @@ void mostrar_ranking(const ListaEstatisticas *estatisticas, int limite);
 
 int dano(Jogador* j, int min, int max);
 void limpar_tela();
-void distribuir_pontos(Jogador* j);
 void pocao(Jogador* j);
 
 #endif 
