@@ -17,6 +17,5 @@ void buscar_atributos(Jogador* j);
 void destruir_jogador(Jogador* j);
 
 const char* buscar_nome(Jogador* j);
-char* criar_barra(char* cor, int quantidade, char *barra, int total);
 
 #endif 

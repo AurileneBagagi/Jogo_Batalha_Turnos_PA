@@ -18,5 +18,6 @@ void mostrar_ranking(const ListaEstatisticas *estatisticas, int limite);
 
 int dano(Jogador* j, int min, int max);
 void limpar_tela();
+char* criar_barra(char* cor, int quantidade, char *barra, int total);
 
 #endif 

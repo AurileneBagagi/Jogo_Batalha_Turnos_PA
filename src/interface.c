@@ -151,6 +151,29 @@ void limpar_tela() {
     fflush(stdout); 
 }
 
+char* criar_barra(char* cor, int quantidade, char *barra, int total) {
+    int i = 0;
+    int j, c, r;
+    char* reset = "\033[0m";
+    
+    for(j = 0; j < quantidade && j <= total; j++) {
+        for(c = 0; cor[c] != '\0'; c++) {
+            barra[i++] = cor[c];
+        }
+        barra[i++] = ' '; 
+        for(r = 0; reset[r] != '\0'; r++) {
+            barra[i++] = reset[r];
+        }
+    }
+    
+    for(; j < total; j++) {
+        barra[i++] = '/';
+    }
+    barra[i] = '\0'; 
+    
+    return barra;
+}
+
 
 
 

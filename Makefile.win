@@ -4,14 +4,14 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = src/batalha.o src/interface.o src/jogador.o src/persistencia.o
-LINKOBJ  = src/batalha.o src/interface.o src/jogador.o src/persistencia.o
+OBJ      = src/batalha.o src/estatisticas.o src/interface.o src/jogador.o src/persistencia.o
+LINKOBJ  = src/batalha.o src/estatisticas.o src/interface.o src/jogador.o src/persistencia.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = BatalhaDeTurnos.exe
-CXXFLAGS = $(CXXINCS) 
-CFLAGS   = $(INCS) 
+CXXFLAGS = $(CXXINCS) -std=c99
+CFLAGS   = $(INCS) -std=c99
 RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
@@ -26,6 +26,9 @@ $(BIN): $(OBJ)
 
 src/batalha.o: src/batalha.c
 	$(CC) -c src/batalha.c -o src/batalha.o $(CFLAGS)
+
+src/estatisticas.o: src/estatisticas.c
+	$(CC) -c src/estatisticas.c -o src/estatisticas.o $(CFLAGS)
 
 src/interface.o: src/interface.c
 	$(CC) -c src/interface.c -o src/interface.o $(CFLAGS)

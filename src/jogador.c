@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../include/jogador.h"
 #include "../include/cores.h"
+#include "../include/interface.h"
 
 #define ESTAMINA_BASE 30
 #define VIDA_BASE 100
@@ -107,29 +108,6 @@ void buscar_atributos(Jogador* j){
 
     free(barra_v);
     free(barra_e);
-}
-
-char* criar_barra(char* cor, int quantidade, char *barra, int total) {
-    int i = 0;
-    int j, c, r;
-    char* reset = "\033[0m";
-    
-    for(j = 0; j < quantidade && j <= total; j++) {
-        for(c = 0; cor[c] != '\0'; c++) {
-            barra[i++] = cor[c];
-        }
-        barra[i++] = ' '; 
-        for(r = 0; reset[r] != '\0'; r++) {
-            barra[i++] = reset[r];
-        }
-    }
-    
-    for(; j < total; j++) {
-        barra[i++] = '/';
-    }
-    barra[i] = '\0'; 
-    
-    return barra;
 }
 
 const char* buscar_nome(Jogador* j){
